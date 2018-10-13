@@ -18,6 +18,7 @@ const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
+const dotenv = require('dotenv');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -43,8 +44,20 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
+const lessRegex = /\.less$/
+const lessModuleRegex = /\.module\.less$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+
+/** поддержка env переменных на фронте
+ * @see https://medium.com/@trekinbami/using-environment-variables-in-react-6b0a99d83cf5
+*/
+const globalEnv = dotenv.config().parsed;
+
+const envKeys = Object.keys(globalEnv).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(globalEnv[next]);
+  return prev;
+}, {});
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -356,6 +369,23 @@ module.exports = {
               getLocalIdent: getCSSModuleLocalIdent,
             }),
           },
+          {
+            test: lessRegex,
+            exclude: lessModuleRegex,
+            use: getStyleLoaders({
+              importLoaders: 2
+            }, 'less-loader'),
+          },
+          {
+            test: lessModuleRegex,
+            use: getStyleLoaders({
+                importLoaders: 2,
+                modules: true,
+                getLocalIdent: getCSSModuleLocalIdent,
+              },
+              'less-loader'
+            ),
+          },
           // Opt-in support for SASS. The logic here is somewhat similar
           // as in the CSS routine, except that "sass-loader" runs first
           // to compile SASS files into CSS.
@@ -413,6 +443,8 @@ module.exports = {
     ],
   },
   plugins: [
+    // добавляет переменные из .env
+    new webpack.DefinePlugin(envKeys),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,

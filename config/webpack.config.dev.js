@@ -14,6 +14,7 @@ const paths = require('./paths');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
+const dotenv = require('dotenv');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -32,6 +33,16 @@ const lessRegex = /\.less$/
 const lessModuleRegex = /\.module\.less$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+
+/** поддержка env переменных на фронте
+ * @see https://medium.com/@trekinbami/using-environment-variables-in-react-6b0a99d83cf5
+*/
+const globalEnv = dotenv.config().parsed;
+
+const envKeys = Object.keys(globalEnv).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(globalEnv[next]);
+  return prev;
+}, {});
 
 // common function to get style loaders
 const getStyleLoaders = (cssOptions, preProcessor) => {
@@ -351,6 +362,8 @@ module.exports = {
     ],
   },
   plugins: [
+    // добавляет переменные из .env
+    new webpack.DefinePlugin(envKeys),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,

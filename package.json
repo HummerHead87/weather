@@ -110,5 +110,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "dotenv": "^6.1.0"
   }
 }
