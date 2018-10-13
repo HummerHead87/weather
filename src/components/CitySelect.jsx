@@ -48,6 +48,7 @@ function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, sele
     </MenuItem>
   );
 }
+
 renderSuggestion.propTypes = {
   highlightedIndex: PropTypes.number,
   index: PropTypes.number,
@@ -64,13 +65,6 @@ const styles = theme => ({
     flexGrow: 1,
     position: 'relative'
   },
-  paper: {
-    position: 'absolute',
-    zIndex: 1,
-    marginTop: theme.spacing.unit,
-    left: 0,
-    right: 0
-  },
   inputRoot: {
     flexWrap: 'wrap'
   },
@@ -80,18 +74,21 @@ const styles = theme => ({
   },
   inputProgress: {
     height: '1px',
+  },
+  popper: {
+    zIndex: 1
   }
 });
 
 let popperNode;
 
-class IntegrationDownshift extends Component {
+class CitySelect extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       loading: false,
-      city: '',
+      // city: null,
       suggestions: []
     };
 
@@ -111,13 +108,14 @@ class IntegrationDownshift extends Component {
   };
 
   citySelect = ({ name, countryCode, countryName }) => {
-    this.setState({
-      city: { name, countryCode, countryName },
-    })
+    this.props.onChange({ name, countryCode, countryName })
+    // this.setState({
+    //   city: { name, countryCode, countryName },
+    // })
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, autoFocus } = this.props;
     const { suggestions, loading } = this.state
 
     return (
@@ -138,6 +136,7 @@ class IntegrationDownshift extends Component {
               {renderInput({
                 fullWidth: true,
                 classes,
+                autoFocus,
                 InputProps: getInputProps({
                   placeholder: 'Search a city',
                   onChange: this.handleChange
@@ -147,7 +146,12 @@ class IntegrationDownshift extends Component {
                 },
               })}
               <div {...getMenuProps()}>
-                <Popper disablePortal open={isOpen} anchorEl={popperNode}>
+                <Popper
+                  disablePortal
+                  open={isOpen}
+                  anchorEl={popperNode}
+                  className={classes.popper}
+                >
                   <Paper
                     square
                     style={{
@@ -178,8 +182,10 @@ class IntegrationDownshift extends Component {
   }
 }
 
-IntegrationDownshift.propTypes = {
-  classes: PropTypes.object.isRequired
+CitySelect.propTypes = {
+  classes: PropTypes.object.isRequired,
+  autoFocus: PropTypes.bool,
+  onChange: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(IntegrationDownshift);
+export default withStyles(styles)(CitySelect);
