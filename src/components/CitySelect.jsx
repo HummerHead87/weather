@@ -110,9 +110,9 @@ class IntegrationDownshift extends Component {
     this.loadCities$.next(value)
   };
 
-  citySelect = ({ name, countryCode }) => {
+  citySelect = ({ name, countryCode, countryName }) => {
     this.setState({
-      city: { name, countryCode },
+      city: { name, countryCode, countryName },
     })
   }
 
