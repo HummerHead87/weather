@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import deburr from 'lodash/deburr';
-// import keycode from 'keycode';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -9,12 +7,10 @@ import Popper from '@material-ui/core/Popper';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import LinearProgress from '@material-ui/core/LinearProgress';
-// import Chip from '@material-ui/core/Chip';
 
 import { Subject } from 'rxjs/Rx';
 
-// import Suggestion from './Suggestion';
-import getCities from '../observables/getCities';
+import loadCities from '../observables/loadCities';
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other  } = inputProps;
@@ -63,7 +59,6 @@ renderSuggestion.propTypes = {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250
   },
   container: {
     flexGrow: 1,
@@ -76,18 +71,12 @@ const styles = theme => ({
     left: 0,
     right: 0
   },
-  chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`
-  },
   inputRoot: {
     flexWrap: 'wrap'
   },
   inputInput: {
     width: 'auto',
     flexGrow: 1
-  },
-  divider: {
-    height: theme.spacing.unit * 2
   },
   inputProgress: {
     height: '1px',
@@ -106,29 +95,19 @@ class IntegrationDownshift extends Component {
       suggestions: []
     };
 
-    this.getCities$ = new Subject();
-    this.getCities$
+    this.loadCities$ = new Subject();
+    this.loadCities$
+      .filter(value => value.length >= 1)
       .debounceTime(400)
       .distinctUntilChanged()
-      .filter(value => value.length >= 2)
-      .map(value => deburr(value))
-      .do(() => this.setState({ loading: true }))
-      .switchMap(value => getCities(value))
-      // .delay(1000)
-      .catch((err, outputObs) => {
-        this.setState({ loading: false });
-        return outputObs;
-      })
-      .subscribe(suggestions => {
-        this.setState({
-          loading: false,
-          suggestions
-        });
+      .switchMap(value => loadCities(value))
+      .subscribe(({ result: suggestions = [], loading = false}) => {
+        this.setState({ suggestions, loading })
       });
   }
 
   handleChange = ({ target: { value }}) => {
-    this.getCities$.next(value)
+    this.loadCities$.next(value)
   };
 
   citySelect = ({ name, countryCode }) => {
@@ -145,7 +124,7 @@ class IntegrationDownshift extends Component {
       <div className={classes.root}>
         <Downshift
           onChange={this.citySelect}
-          itemToString={({ name, countryName }) => `${name} (${countryName})`}
+          itemToString={item => item ? `${item.name} (${item.countryName})` : ''}
         >
           {({
             getInputProps,
