@@ -1,5 +1,6 @@
 import deburr from 'lodash/deburr'
-import { Observable } from 'rxjs/Rx';
+import { from, of, merge } from 'rxjs';
+import { pluck, map, switchMap, catchError } from 'rxjs/operators';
 import Axios from  'axios-observable';
 
 const url = 'http://api.geonames.org/search';
@@ -14,30 +15,30 @@ const loadGeoData = name_startsWith => {
     username: process.env.GEONAMES_LOGIN
   };
 
-  return Observable
-    .from(Axios.get(url, { params }))
-    .pluck('data', 'geonames')
-    .map(result => { 
-      return { result }
-    })
+  return from(Axios.get(url, { params }))
+    .pipe(
+      pluck('data', 'geonames'),
+      map(result => ({ result }))
+    )
 }
 
 
 const loadCities = (phrase) => {
-  return Observable
-    .of(phrase)
-    .map(value => deburr(value))
-    .switchMap(value => {
-      return Observable.merge(
-        Observable.of({ loading: true }),
-        loadGeoData(value)
-      )
-    })
-    .catch(err => {
-      console.log('loadCities error')
-      console.error(err)
-      return Observable.of({ loading: false })
-    })
+  return of(phrase)
+    .pipe(
+      map(value => deburr(value)),
+      switchMap(value => {
+        return merge(
+          of({ loading: true }),
+          loadGeoData(value)
+        )
+      }),
+      catchError(err => {
+        console.log('loadCities error')
+        console.error(err)
+        return of({ loading: false })
+      })
+    )
 }
 
 export default loadCities;
