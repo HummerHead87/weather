@@ -13,7 +13,7 @@ import { Subject } from 'rxjs/Rx';
 import loadCities from '../observables/loadCities';
 
 function renderInput(inputProps) {
-  const { InputProps, classes, ref, ...other  } = inputProps;
+  const { InputProps, classes, ref, error, touched, ...other  } = inputProps;
 
   return (
     <TextField
@@ -25,6 +25,8 @@ function renderInput(inputProps) {
         },
         ...InputProps
       }}
+      error={touched && !!error}
+      helperText={touched && error}
       {...other}
     />
   );
@@ -88,7 +90,6 @@ class CitySelect extends Component {
 
     this.state = {
       loading: false,
-      // city: null,
       suggestions: []
     };
 
@@ -105,24 +106,36 @@ class CitySelect extends Component {
 
   handleChange = ({ target: { value }}) => {
     this.loadCities$.next(value)
-  };
+  }
+
+  handleBlur = () => {
+    this.props.onBlur('city', true)
+  }
 
   citySelect = ({ name, countryCode, countryName }) => {
-    this.props.onChange({ name, countryCode, countryName })
-    // this.setState({
-    //   city: { name, countryCode, countryName },
-    // })
+    this.props.onChange('city', { name, countryCode, countryName })
+  }
+
+  generateLabel = (city) => {
+    return city ? `${city.name} (${city.countryName})` : ''
   }
 
   render() {
-    const { classes, autoFocus } = this.props;
+    const {
+      classes,
+      autoFocus,
+      error,
+      touched,
+      // value
+    } = this.props;
     const { suggestions, loading } = this.state
 
     return (
       <div className={classes.root}>
         <Downshift
-          onChange={this.citySelect}
-          itemToString={item => item ? `${item.name} (${item.countryName})` : ''}
+          onSelect={this.citySelect}
+          itemToString={item => this.generateLabel(item)}
+          // inputValue={this.generateLabel(value)}
         >
           {({
             getInputProps,
@@ -137,9 +150,12 @@ class CitySelect extends Component {
                 fullWidth: true,
                 classes,
                 autoFocus,
+                error,
+                touched,
                 InputProps: getInputProps({
                   placeholder: 'Search a city',
-                  onChange: this.handleChange
+                  onChange: this.handleChange,
+                  onBlur: this.handleBlur
                 }),
                 ref: node => {
                   popperNode = node;
