@@ -8,7 +8,14 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import { Subject } from 'rxjs/Rx';
+import { Subject} from 'rxjs';
+import {
+  filter,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+} from 'rxjs/operators';
+
 
 import loadCities from '../observables/loadCities';
 
@@ -95,13 +102,15 @@ class CitySelect extends Component {
 
     this.loadCities$ = new Subject();
     this.loadCities$
-      .filter(value => value.length >= 1)
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .switchMap(value => loadCities(value))
+      .pipe(
+        filter(value => value.length >= 1),
+        debounceTime(400),
+        distinctUntilChanged(),
+        switchMap(value => loadCities(value)),
+      )
       .subscribe(({ result: suggestions = [], loading = false}) => {
         this.setState({ suggestions, loading })
-      });
+      })
   }
 
   handleChange = ({ target: { value }}) => {
