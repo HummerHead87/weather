@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { withStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import CitySelect from './CitySelect'
 import { withFormik } from 'formik'
 
@@ -77,13 +77,22 @@ CityDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onChangeOpen: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-};
+  values: PropTypes.shape.isSubmitting,
+  touched: PropTypes.bool.isRequired,
+  errors: PropTypes.shape.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  handleReset: PropTypes.func.isRequired,
+  setFieldValue: PropTypes.func.isRequired,
+  setFieldTouched: PropTypes.func.isRequired,
+  dirty: PropTypes.bool.isRequired,
+}
 
 const FormCityDialog = withFormik({
   mapPropsToValues: () => ({ city: null }),
 
   validate: values => {
-    const errors = {};
+    const errors = {}
     if (!values.city) {
       errors.city = 'Choose a city'
     }
@@ -94,9 +103,9 @@ const FormCityDialog = withFormik({
   handleSubmit: (values, context) => {
     // TODO: insert store action here
     setTimeout(() => {
-      alert(JSON.stringify(values, null, 2));
-      context.setSubmitting(false);
-    }, 1000);
+      alert(JSON.stringify(values, null, 2))
+      context.setSubmitting(false)
+    }, 1000)
   },
 
   displayName: 'FormCityDialog'

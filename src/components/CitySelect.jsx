@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Downshift from 'downshift';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Popper from '@material-ui/core/Popper';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Downshift from 'downshift'
+import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Popper from '@material-ui/core/Popper'
+import Paper from '@material-ui/core/Paper'
+import MenuItem from '@material-ui/core/MenuItem'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
-import { Subject} from 'rxjs';
+import { Subject} from 'rxjs'
 import {
   filter,
   debounceTime,
   distinctUntilChanged,
   switchMap,
-} from 'rxjs/operators';
+} from 'rxjs/operators'
 
 
-import loadCities from '../observables/loadCities';
+import loadCities from '../observables/loadCities'
 
 function renderInput(inputProps) {
-  const { InputProps, classes, ref, error, touched, ...other  } = inputProps;
+  const { InputProps, classes, ref, error, touched, ...other  } = inputProps
 
   return (
     <TextField
@@ -36,11 +36,11 @@ function renderInput(inputProps) {
       helperText={touched && error}
       {...other}
     />
-  );
+  )
 }
 
 function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, selectedItem }) {
-  const isHighlighted = highlightedIndex === index;
+  const isHighlighted = highlightedIndex === index
   const isSelected = suggestion === selectedItem
 
   return (
@@ -55,7 +55,7 @@ function renderSuggestion({ suggestion, index, itemProps, highlightedIndex, sele
     >
       {suggestion.name} ({suggestion.countryName})
     </MenuItem>
-  );
+  )
 }
 
 renderSuggestion.propTypes = {
@@ -64,7 +64,7 @@ renderSuggestion.propTypes = {
   itemProps: PropTypes.object,
   selectedItem: PropTypes.string,
   suggestion: PropTypes.shape({ name: PropTypes.string }).isRequired,
-};
+}
 
 const styles = theme => ({
   root: {
@@ -87,20 +87,20 @@ const styles = theme => ({
   popper: {
     zIndex: 1
   }
-});
+})
 
-let popperNode;
+let popperNode
 
 class CitySelect extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       loading: false,
       suggestions: []
-    };
+    }
 
-    this.loadCities$ = new Subject();
+    this.loadCities$ = new Subject()
     this.loadCities$
       .pipe(
         filter(value => value.length >= 1),
@@ -136,7 +136,7 @@ class CitySelect extends Component {
       error,
       touched,
       // value
-    } = this.props;
+    } = this.props
     const { suggestions, loading } = this.state
 
     return (
@@ -167,7 +167,7 @@ class CitySelect extends Component {
                   onBlur: this.handleBlur
                 }),
                 ref: node => {
-                  popperNode = node;
+                  popperNode = node
                 },
               })}
               <div {...getMenuProps()}>
@@ -203,7 +203,7 @@ class CitySelect extends Component {
           )}
         </Downshift>
       </div>
-    );
+    )
   }
 }
 
@@ -211,6 +211,6 @@ CitySelect.propTypes = {
   classes: PropTypes.object.isRequired,
   autoFocus: PropTypes.bool,
   onChange: PropTypes.func.isRequired
-};
+}
 
-export default withStyles(styles)(CitySelect);
+export default withStyles(styles)(CitySelect)

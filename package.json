@@ -21,7 +21,6 @@
     "css-loader": "1.0.0",
     "dotenv-expand": "4.2.0",
     "downshift": "^3.0.0",
-    "eslint": "5.6.0",
     "eslint-config-react-app": "^3.0.3",
     "eslint-loader": "2.1.1",
     "eslint-plugin-flowtype": "2.50.1",
@@ -118,6 +117,10 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^6.1.0"
+    "dotenv": "^6.1.0",
+    "eslint": "^5.6.0",
+    "eslint-config-standart": "^0.2.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
   }
 }
