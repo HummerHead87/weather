@@ -20,14 +20,6 @@ const styles = theme => ({
 })
 
 class CityDialog extends Component {
-  // state = {
-  //   city: null
-  // }
-
-  // handleCityChange = (city) => {
-  //   this.setState({ city })
-  // }
-
   render() {
     const {
       open,
@@ -37,8 +29,6 @@ class CityDialog extends Component {
       touched,
       errors,
       isSubmitting,
-      // handleChange,
-      handleBlur,
       handleSubmit,
       handleReset,
       setFieldValue,
@@ -102,7 +92,7 @@ const FormCityDialog = withFormik({
   },
 
   handleSubmit: (values, context) => {
-    debugger
+    // TODO: insert store action here
     setTimeout(() => {
       alert(JSON.stringify(values, null, 2));
       context.setSubmitting(false);
