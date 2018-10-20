@@ -13,6 +13,8 @@ import Grid from '@material-ui/core/Grid'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
+import { hot } from 'react-hot-loader'
+
 import CityDialog from './components/CityDialog'
 
 const styles = theme => ({
@@ -173,4 +175,4 @@ Album.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(Album)
+export default hot(module)(withStyles(styles)(Album))
