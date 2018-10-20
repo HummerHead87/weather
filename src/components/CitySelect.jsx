@@ -97,7 +97,7 @@ class CitySelect extends Component {
 
     this.state = {
       loading: false,
-      suggestions: []
+      suggestions: [],
     }
 
     this.loadCities$ = new Subject()
@@ -114,6 +114,7 @@ class CitySelect extends Component {
   }
 
   handleChange = ({ target: { value }}) => {
+    this.props.onChange('city', value)
     this.loadCities$.next(value)
   }
 
@@ -126,7 +127,11 @@ class CitySelect extends Component {
   }
 
   generateLabel = (city) => {
-    return city ? `${city.name} (${city.countryName})` : ''
+    if (typeof city === 'string') {
+      return city
+    } else {
+      return city ? `${city.name} (${city.countryName})` : ''
+    }
   }
 
   render() {
@@ -135,7 +140,7 @@ class CitySelect extends Component {
       autoFocus,
       error,
       touched,
-      // value
+      value
     } = this.props
     const { suggestions, loading } = this.state
 
@@ -144,7 +149,7 @@ class CitySelect extends Component {
         <Downshift
           onSelect={this.citySelect}
           itemToString={item => this.generateLabel(item)}
-          // inputValue={this.generateLabel(value)}
+          inputValue={this.generateLabel(value)}
         >
           {({
             getInputProps,
