@@ -161,6 +161,7 @@ class Album extends Component {
         {/* End footer */}
         <CityDialog
           open={this.state.cityDialog}
+          key={this.state.cityDialog}
           onChangeOpen={this.handleCityDialog}
         ></CityDialog>
       </React.Fragment>

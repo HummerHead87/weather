@@ -16,6 +16,9 @@ const styles = theme => ({
   },
   textLabel: {
     marginBottom: theme.spacing.unit * 3
+  },
+  clear: {
+    marginRight: 'auto'
   }
 })
 
@@ -58,7 +61,12 @@ class CityDialog extends Component {
           ></CitySelect>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleReset} disabled={!dirty || isSubmitting} color="primary">
+          <Button
+            className={classes.clear}
+            onClick={handleReset}
+            disabled={!dirty || isSubmitting}
+            color="primary"
+          >
             Clear
           </Button>
           <Button onClick={() => onChangeOpen(false)} color="primary">
@@ -77,9 +85,9 @@ CityDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onChangeOpen: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  values: PropTypes.shape.isSubmitting,
-  touched: PropTypes.bool.isRequired,
-  errors: PropTypes.shape.isRequired,
+  values: PropTypes.object.isRequired,
+  touched: PropTypes.object,
+  errors: PropTypes.object.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   handleReset: PropTypes.func.isRequired,
