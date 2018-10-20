@@ -9,6 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import CitySelect from './CitySelect'
 import { withFormik } from 'formik'
+import size from 'lodash/size'
 
 const styles = theme => ({
   root: {
@@ -39,6 +40,8 @@ class CityDialog extends Component {
       dirty,
     } = this.props
 
+    const submitDisabled = isSubmitting || (!!size(touched) && !!size(errors))
+
     return (
       <Dialog
         classes={{ paperScrollPaper: classes.root}}
@@ -49,7 +52,7 @@ class CityDialog extends Component {
         <DialogTitle id="form-dialog-title">Choose a city</DialogTitle>
         <DialogContent className={classes.root}>
           <DialogContentText className={classes.textLabel}>
-            To find city start typing and pick a one from suggestions.
+            To find city start typing and pick a one from the suggestions.
           </DialogContentText>
           <CitySelect
             autoFocus
@@ -58,6 +61,7 @@ class CityDialog extends Component {
             onBlur={setFieldTouched}
             error={errors.city}
             touched={touched.city}
+            onSubmit={handleSubmit}
           ></CitySelect>
         </DialogContent>
         <DialogActions>
@@ -72,7 +76,7 @@ class CityDialog extends Component {
           <Button onClick={() => onChangeOpen(false)} color="primary">
             Cancel
           </Button>
-          <Button type="submit" onClick={handleSubmit} disabled={isSubmitting} color="primary">
+          <Button type="submit" onClick={handleSubmit} disabled={submitDisabled} color="primary">
             Save
           </Button>
         </DialogActions>
@@ -101,7 +105,8 @@ const FormCityDialog = withFormik({
 
   validate: values => {
     const errors = {}
-    if (!values.city) {
+
+    if (!values.city || !values.city.name) {
       errors.city = 'Choose a city'
     }
 
