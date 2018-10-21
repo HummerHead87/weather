@@ -10,6 +10,8 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import CitySelect from './CitySelect'
 import { withFormik } from 'formik'
 import size from 'lodash/size'
+import { connect } from 'react-redux'
+import { addCity } from '../actions'
 
 const styles = theme => ({
   root: {
@@ -98,6 +100,8 @@ CityDialog.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
   setFieldTouched: PropTypes.func.isRequired,
   dirty: PropTypes.bool.isRequired,
+  // from redux
+  addCity: PropTypes.func.isRequired,
 }
 
 const FormCityDialog = withFormik({
@@ -113,15 +117,13 @@ const FormCityDialog = withFormik({
     return errors
   },
 
-  handleSubmit: (values, context) => {
-    // TODO: insert store action here
-    setTimeout(() => {
-      alert(JSON.stringify(values, null, 2))
-      context.setSubmitting(false)
-    }, 1000)
+  handleSubmit: ({city}, { setSubmitting, props }) => {
+    props.addCity(city)
+    setSubmitting.false
+    props.onChangeOpen(false)
   },
 
   displayName: 'FormCityDialog'
 })(withStyles(styles)(CityDialog))
 
-export default FormCityDialog
+export default connect(null, { addCity })(FormCityDialog)
