@@ -1,7 +1,9 @@
-export const LOAD_CITIES = 'LOAD_CITIES'
-export const CLEAR_CITIES = 'CLEAR_CITIES'
-export const ADD_CITY = 'ADD_CITY'
-export const DELETE_CITY = 'DELETE_CITY'
+import {
+  LOAD_CITIES,
+  CLEAR_CITIES,
+  ADD_CITY,
+  DELETE_CITY,
+} from '../constants'
 
 export const loadCities = () => ({ type: LOAD_CITIES })
 

@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Rx'
 import { combineEpics } from 'redux-observable'
-import { clearCities, LOAD_CITIES } from '../actions'
+import { clearCities } from '../actions'
+import { LOAD_CITIES } from '../constants'
 
 function loadCitiesEpic(action$) {
   return action$.ofType(LOAD_CITIES)

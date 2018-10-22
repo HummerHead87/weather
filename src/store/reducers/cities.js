@@ -1,7 +1,6 @@
 import { Record, List } from 'immutable'
-import { REHYDRATE } from 'redux-persist'
 
-import { LOAD_CITIES, CLEAR_CITIES, ADD_CITY, DELETE_CITY } from '../actions'
+import { LOAD_CITIES, CLEAR_CITIES, ADD_CITY, DELETE_CITY } from '../constants'
 
 export const CitiesState = Record({
   items: new List(),
