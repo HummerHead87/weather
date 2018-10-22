@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
 import { connect } from 'react-redux'
-import { deleteCity } from '../actions'
+import { deleteCity } from '../store/actions'
 
 
 const styles = theme => ({

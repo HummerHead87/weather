@@ -11,7 +11,7 @@ import CitySelect from './CitySelect'
 import { withFormik } from 'formik'
 import size from 'lodash/size'
 import { connect } from 'react-redux'
-import { addCity } from '../actions'
+import { addCity } from '../store/actions'
 
 const styles = theme => ({
   root: {
