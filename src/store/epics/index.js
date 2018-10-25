@@ -6,8 +6,8 @@ import loadWeather from '../../observables/loadWeather'
 
 const loadWeatherEpic = (action$) => {
   return action$.ofType(LOAD_WEATHER + START)
-    .switchMap(({ payload: { geonameId, name, countryCode } }) => {
-      return Observable.combineLatest(
+    .mergeMap(({ payload: { geonameId, name, countryCode } }) => {
+      return Observable.zip(
         Observable.of(geonameId),
         loadWeather({ q: `${name},${countryCode}` })
           .catch(err => Observable.of(err)),
