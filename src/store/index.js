@@ -6,14 +6,14 @@ import { createEpicMiddleware } from 'redux-observable'
 
 import rootReducer from './reducers'
 import { rootEpic } from './epics'
-import { CitiesState } from './reducers/cities'
+import { CitiesState, CityRecord } from './reducers/cities'
 
 const epicMiddleware = createEpicMiddleware()
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const persistConfig = {
-  transforms: [immutableTransform({records: [CitiesState]})],
+  transforms: [immutableTransform({records: [CitiesState, CityRecord]})],
   key: 'root',
   storage: storage,
   whitelist: ['cities']

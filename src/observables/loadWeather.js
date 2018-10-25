@@ -13,7 +13,6 @@ const loadWeather = data => {
 
   return Observable
     .from(Axios.get(url, { params }))
-    .delay(1000)
     .pluck('data')
 }
 
