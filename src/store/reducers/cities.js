@@ -1,6 +1,6 @@
 import { Record, List } from 'immutable'
 
-import { LOAD_CITIES, CLEAR_CITIES, ADD_CITY, DELETE_CITY } from '../constants'
+import { ADD_CITY, DELETE_CITY } from '../constants'
 
 export const CitiesState = Record({
   items: new List(),

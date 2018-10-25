@@ -1,17 +1,8 @@
 import { Observable } from 'rxjs/Rx'
 import { combineEpics } from 'redux-observable'
-import { clearCities, loadWeatherSuccess, loadWeatherError } from '../actions'
-import { LOAD_CITIES, LOAD_WEATHER, START } from '../constants'
+import { loadWeatherSuccess, loadWeatherError } from '../actions'
+import { LOAD_WEATHER, START } from '../constants'
 import loadWeather from '../../observables/loadWeather'
-
-const loadCitiesEpic = (action$) => {
-  return action$.ofType(LOAD_CITIES)
-    .switchMap(() => {
-      return Observable.of(clearCities()).delay(2000)
-    })
-    // .do(console.log)
-    // .ignoreElements()
-}
 
 const loadWeatherEpic = (action$) => {
   return action$.ofType(LOAD_WEATHER + START)
@@ -34,4 +25,4 @@ const loadWeatherEpic = (action$) => {
 
 
 
-export const rootEpic = combineEpics(loadCitiesEpic, loadWeatherEpic)
+export const rootEpic = combineEpics(loadWeatherEpic)
