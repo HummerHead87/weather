@@ -22,7 +22,7 @@ export default (weatherState = defaultState, action) => {
     return weatherState
       .set('loading',
         weatherState.loading.filterNot(id => id === payload.geonameId))
-      .set('items', weatherState.items.set(payload.geonameId, payload.data))
+      .set('items', weatherState.items.set(payload.data.id, payload.data))
       .set('errors', weatherState.errors.delete(payload.geonameId))
 
   case LOAD_WEATHER + FAIL:

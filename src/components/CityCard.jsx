@@ -114,7 +114,7 @@ CityCard.propTypes = {
 
 export default connect((state, ownProps) => ({
   loading: state.weather.loading.includes(ownProps.city.geonameId),
-  weather: state.weather.items.get(ownProps.city.geonameId),
+  weather: state.weather.items.get(ownProps.city.weatherId),
   error: state.weather.errors.get(ownProps.city.geonameId)
 }), (dispatch, ownProps) => ({
   deleteCity: () => dispatch(deleteCity(ownProps.city.geonameId)),
