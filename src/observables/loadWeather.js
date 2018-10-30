@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs/Rx'
 import Axios from  'axios-observable'
 
-const url = 'http://api.openweathermap.org/data/2.5/weather'
+const getUrl = (type) => `http://api.openweathermap.org/data/2.5/${type}`
 
-const loadWeather = data => {
+const loadWeather = ({ type, data }) => {
   const params = {
     units: 'metric',
     lang: 'en',
@@ -12,7 +12,7 @@ const loadWeather = data => {
   }
 
   return Observable
-    .from(Axios.get(url, { params }))
+    .from(Axios.get(getUrl(type), { params }))
     .pluck('data')
 }
 

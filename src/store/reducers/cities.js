@@ -7,11 +7,11 @@ export const CitiesState = Record({
 }, 'CitiesState')
 
 export const CityRecord = Record({
-  name: undefined,
-  countryCode: undefined,
-  countryName: undefined,
-  geonameId: undefined,
-  weatherId: undefined,
+  name: '',
+  countryCode: '',
+  countryName: '',
+  geonameId: '',
+  weatherId: '',
 })
 
 const defaultState = CitiesState()

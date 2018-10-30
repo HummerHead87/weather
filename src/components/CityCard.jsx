@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-// import classNames from 'classnames'
 
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -8,7 +7,6 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -33,8 +31,14 @@ const styles = theme => ({
   }
 })
 
-const WeatherInfo = ({weather = null, error = null}) => {
-  if (error) return <Typography color='error'>Error while loading data</Typography>
+const WeatherInfo = ({ weather, error }) => {
+  if (error)  {
+    let text = 'Error while loading data'
+    
+    if (error.response.status === 404) text = 'No data for this location'
+
+    return <Typography color='error'>{text}</Typography>
+  }
 
   if (weather) {
     return (
@@ -114,8 +118,8 @@ CityCard.propTypes = {
 
 export default connect((state, ownProps) => ({
   loading: state.weather.loading.includes(ownProps.city.geonameId),
-  weather: state.weather.items.get(ownProps.city.weatherId),
-  error: state.weather.errors.get(ownProps.city.geonameId)
+  weather: state.weather.items.get(ownProps.city.weatherId.toString()),
+  error: state.weather.errors.get(ownProps.city.geonameId.toString())
 }), (dispatch, ownProps) => ({
   deleteCity: () => dispatch(deleteCity(ownProps.city.geonameId)),
   loadWeather: () => dispatch(loadWeather(ownProps.city))
