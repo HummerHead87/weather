@@ -13,11 +13,15 @@ export default class FromNow extends Component {
   }
 
   componentDidMount() {
-    const fromNow$ = Observable
-      .interval(1000 * 60)
+    this.fromNow$ = Observable
+      .interval(1000 * 6)
       .startWith(0)
       .map(() => moment(this.props.date).fromNow())
       .subscribe(fromNow => this.setState({ fromNow }))
+  }
+
+  componentWillUnmount() {
+    this.fromNow$.complete()
   }
   
   render() {
