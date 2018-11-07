@@ -52,7 +52,6 @@ const CityList = (props) => {
           </Grid>
         ))}
       </Grid>
-      <pre><code>{JSON.stringify(cities, null, 2)}</code></pre>
     </div>
   )
 }
