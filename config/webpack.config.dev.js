@@ -236,6 +236,7 @@ module.exports = {
                       },
                     },
                   },
+                  'react-hot-loader/babel'
                 ],
               ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -308,11 +309,11 @@ module.exports = {
           {
             test: lessModuleRegex,
             use: getStyleLoaders({
-                importLoaders: 2,
-                modules: true,
-                getLocalIdent: getCSSModuleLocalIdent,
-              },
-              'less-loader'
+              importLoaders: 2,
+              modules: true,
+              getLocalIdent: getCSSModuleLocalIdent,
+            },
+            'less-loader'
             ),
           },
           // Opt-in support for SASS (using .scss or .sass extensions).

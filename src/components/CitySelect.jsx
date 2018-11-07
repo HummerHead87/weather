@@ -7,6 +7,7 @@ import Popper from '@material-ui/core/Popper'
 import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import pick from 'lodash/pick'
 
 import { Subject} from 'rxjs'
 import {
@@ -122,8 +123,16 @@ class CitySelect extends Component {
     this.props.onBlur('city', true)
   }
 
-  citySelect = ({ name, countryCode, countryName }) => {
-    this.props.onChange('city', { name, countryCode, countryName })
+  handleKeyPress = (e) => {
+    if(e.keyCode == 13){
+      this.props.onSubmit()
+    }
+  }
+
+  citySelect = (city) => {
+    this.props.onChange('city',
+      pick(city, ['name', 'countryCode', 'countryName', 'geonameId'])
+    )
   }
 
   generateLabel = (city) => {
@@ -169,7 +178,8 @@ class CitySelect extends Component {
                 InputProps: getInputProps({
                   placeholder: 'Search a city',
                   onChange: this.handleChange,
-                  onBlur: this.handleBlur
+                  onBlur: this.handleBlur,
+                  onKeyDown: this.handleKeyPress
                 }),
                 ref: node => {
                   popperNode = node
@@ -215,7 +225,8 @@ class CitySelect extends Component {
 CitySelect.propTypes = {
   classes: PropTypes.object.isRequired,
   autoFocus: PropTypes.bool,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
 }
 
 export default withStyles(styles)(CitySelect)

@@ -36,7 +36,7 @@ const loadCities = (phrase) => {
       catchError(err => {
         console.log('loadCities error')
         console.error(err)
-        return of({ loading: false })
+        return of({ loading: false, err })
       })
     )
 }
