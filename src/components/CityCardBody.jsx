@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 
 
 import WeatherInfo from './WeatherInfo'
+import FromNow from './FromNow'
 
 const styles = theme => ({
   caption: {
@@ -26,7 +27,9 @@ const CityCardBody = ({ weather, error, classes }) => {
     return (
       <div>
         <WeatherInfo weather={weather} />
-        <Typography variant="caption" className={classes.caption}>{weather.dt}</Typography>
+        <Typography variant="caption" className={classes.caption}>
+          <FromNow date={weather.dt * 1000}></FromNow>
+        </Typography>
       </div>
     )
   }
