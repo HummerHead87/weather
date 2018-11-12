@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { hot } from 'react-hot-loader'
+import AddIcon from '@material-ui/icons/Add'
 
 import CityDialog from './components/CityDialog'
 import CityList from './components/CitiyList'
@@ -30,6 +31,9 @@ const styles = theme => ({
   },
   heroButtons: {
     marginTop: theme.spacing.unit * 4,
+  },
+  buttonIcon: {
+    marginRight: theme.spacing.unit,
   },
   layout: {
     width: 'auto',
@@ -83,6 +87,7 @@ class Album extends Component {
               <div className={classes.heroButtons}>
                 <Grid container justify="center">
                   <Button variant="contained" color="primary" onClick={() => this.handleCityDialog(true)}>
+                    <AddIcon className={classes.buttonIcon} />
                     Add city
                   </Button>
                 </Grid>
