@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
-import CameraIcon from '@material-ui/icons/PhotoCamera'
+import CloudIcon from '@material-ui/icons/Cloud'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Grid from '@material-ui/core/Grid'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -26,7 +26,7 @@ const styles = theme => ({
   heroContent: {
     maxWidth: 600,
     margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
+    padding: `${theme.spacing.unit * 8}px ${theme.spacing.unit}px ${theme.spacing.unit * 6}px`,
   },
   heroButtons: {
     marginTop: theme.spacing.unit * 4,
@@ -41,27 +41,11 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
   },
 })
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 class Album extends Component {
   state = {
@@ -80,9 +64,9 @@ class Album extends Component {
         <CssBaseline />
         <AppBar position="static" className={classes.appBar}>
           <Toolbar>
-            <CameraIcon className={classes.icon} />
+            <CloudIcon className={classes.icon} />
             <Typography variant="h6" color="inherit" noWrap>
-              Album layout
+              World weather
             </Typography>
           </Toolbar>
         </AppBar>
@@ -91,25 +75,16 @@ class Album extends Component {
           <div className={classes.heroUnit}>
             <div className={classes.heroContent}>
               <Typography variant="h2" align="center" color="textPrimary" gutterBottom>
-                Album layout
+                World weather
               </Typography>
-              <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                Something short and leading about the collection below—its contents, the creator, etc.
-                Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-                entirely.
+              <Typography variant="subtitle1" align="center" color="textSecondary" paragraph>
+                Watch weather in your current location and in any city in the world
               </Typography>
               <div className={classes.heroButtons}>
-                <Grid container spacing={16} justify="center">
-                  <Grid item>
-                    <Button variant="contained" color="primary" onClick={() => this.handleCityDialog(true)}>
-                      Add city
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button variant="outlined" color="primary">
-                      Secondary action
-                    </Button>
-                  </Grid>
+                <Grid container justify="center">
+                  <Button variant="contained" color="primary" onClick={() => this.handleCityDialog(true)}>
+                    Add city
+                  </Button>
                 </Grid>
               </div>
             </div>

@@ -28,9 +28,6 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
   cardContent: {
     flexGrow: 1,
   },
@@ -45,7 +42,7 @@ const CityList = (props) => {
     <div className={classNames(classes.layout, classes.cardGrid)}>
       <Grid container spacing={40}>
         {cities.map(city => (
-          <Grid item key={city.geonameId} sm={6} md={4} lg={3}>
+          <Grid item key={city.geonameId} xs={12} sm={6} md={4} lg={3}>
             <CityCard
               city={city}
             ></CityCard>

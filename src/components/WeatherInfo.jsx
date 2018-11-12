@@ -4,21 +4,39 @@ import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = theme => ({
+  row: {
+    height: 'auto'
+  },
+  cell: {
+    padding: theme.spacing.unit,
+    '&:last-child': {
+      textAlign: 'right',
+      paddingRight: theme.spacing.unit,
+    }
+  }
+})
 
 
 const WeatherInfo = (props) => {
-  const { weather } = props
+  const { weather, classes } = props
 
   return (
-    <Table>
+    <Table padding="dense">
       <TableBody>
-        <TableRow>
-          <TableCell>Weather</TableCell>
-          <TableCell>{weather.weather[0].main}</TableCell>
+        <TableRow className={classes.row}>
+          <TableCell className={classes.cell}>Weather</TableCell>
+          <TableCell className={classes.cell}>{weather.weather[0].main}</TableCell>
         </TableRow>
-        <TableRow>
-          <TableCell>Temperature</TableCell>
-          <TableCell>{Math.round(weather.main.temp)} &deg;С</TableCell>
+        <TableRow className={classes.row}>
+          <TableCell className={classes.cell}>Temperature</TableCell>
+          <TableCell className={classes.cell}>{Math.round(weather.main.temp)} &deg;С</TableCell>
+        </TableRow>
+        <TableRow className={classes.row}>
+          <TableCell className={classes.cell}>Humidity</TableCell>
+          <TableCell className={classes.cell}>{Math.round(weather.main.humidity)} %</TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -26,7 +44,8 @@ const WeatherInfo = (props) => {
 }
 
 WeatherInfo.propTypes = {
+  classes: PropTypes.object.isRequired,
   weather: PropTypes.object.isRequired,
 }
 
-export default WeatherInfo
+export default withStyles(styles)(WeatherInfo)
