@@ -1,20 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
-import { withStyles } from '@material-ui/core/styles'
-
 
 import WeatherInfo from './WeatherInfo'
-import FromNow from './FromNow'
 
-const styles = theme => ({
-  caption: {
-    marginTop: theme.spacing.unit,
-    textAlign: 'right'
-  }
-})
-
-const CityCardBody = ({ weather, error, classes }) => {
+const CityCardBody = ({ weather, error }) => {
   if (error)  {
     let text = 'Error while loading data'
     
@@ -27,9 +17,6 @@ const CityCardBody = ({ weather, error, classes }) => {
     return (
       <div>
         <WeatherInfo weather={weather} />
-        <Typography variant="caption" className={classes.caption}>
-          <FromNow date={weather.dt * 1000}></FromNow>
-        </Typography>
       </div>
     )
   }
@@ -40,7 +27,6 @@ const CityCardBody = ({ weather, error, classes }) => {
 CityCardBody.propTypes = {
   weather: PropTypes.object,
   error: PropTypes.object,
-  classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(CityCardBody)
+export default CityCardBody
