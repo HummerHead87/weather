@@ -13,6 +13,7 @@ import AddIcon from '@material-ui/icons/Add'
 
 import CityDialog from './components/CityDialog'
 import CityList from './components/CitiyList'
+import CurrentCity from './components/CurrentCity'
 
 const styles = theme => ({
   appBar: {
@@ -84,6 +85,7 @@ class Album extends Component {
               <Typography variant="subtitle1" align="center" color="textSecondary" paragraph>
                 Watch weather in your current location and in any city in the world
               </Typography>
+              <CurrentCity></CurrentCity>
               <div className={classes.heroButtons}>
                 <Grid container justify="center">
                   <Button variant="contained" color="primary" onClick={() => this.handleCityDialog(true)}>

@@ -25,13 +25,21 @@ const loadWeatherList = (dataArray) => {
     })
 }
 
-const loadWeatherItem = ({ payload: { geonameId, name, countryCode } }) => {
+const loadWeatherItem = ({ payload: { geonameId, current = false, name, countryCode, lat, lon } }) => {
+  let queryParams
+
+  if (name) {
+    queryParams = { q: `${name},${countryCode}` }
+  } else {
+    queryParams = { lat, lon }
+  }
+
   return Observable
     .zip(
-      Observable.of(geonameId),
-      loadWeather({ type: 'weather', data: { q: `${name},${countryCode}` } })
+      Observable.of({ geonameId, current }),
+      loadWeather({ type: 'weather', data: queryParams })
         .catch(err => Observable.of(err)),
-      (geonameId, data) => ({ geonameId, data })
+      ({ geonameId, current }, data) => ({ geonameId, current, data })
     )
     .map(payload => {
       if (payload.data instanceof Error) {
@@ -46,6 +54,7 @@ const loadWeatherEpic = (action$) => {
   return action$.ofType(LOAD_WEATHER + START)
     .bufferTime(300)
     .filter(val => val.length > 0)
+    // делим пришедшие города на те, у которых уже есть weatherId и у которых его нет
     .map(val => partition(val, ({ payload }) => payload.weatherId))
     .map(([withId = null, withoutId = null]) => {
       let observablesArray = []

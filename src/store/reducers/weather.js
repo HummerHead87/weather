@@ -12,18 +12,27 @@ export const WeatherState = Record({
 const defaultState = new WeatherState()
 
 export default (weatherState = defaultState, action) => {
-  const {type, payload} = action
+  const { type, payload } = action
 
   switch(type) {
   case LOAD_WEATHER + START:
+    const id = payload.current ? 'current' : payload.geonameId
     return weatherState
-      .set('loading', weatherState.loading.push(payload.geonameId))
+      .set('loading', weatherState.loading.push(id))
 
   case LOAD_WEATHER + SUCCESS:
     return weatherState
       .set('loading',
-        weatherState.loading.filterNot(id => id === payload.geonameId))
-      .set('items', weatherState.items.set(payload.data.id.toString(), payload.data))
+        weatherState.loading.filterNot(id => {
+          if (id === 'current') {
+            return payload.current
+          }
+
+          return id === payload.geonameId
+        }))
+      .set('items', weatherState.items.set(
+        payload.data.id.toString(), { ...payload.data, current: payload.current })
+      )
       .set('errors', weatherState.errors.delete(payload.geonameId))
 
   case LOAD_WEATHER + FAIL:
