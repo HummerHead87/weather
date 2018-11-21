@@ -12,7 +12,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { deleteCity, loadWeather } from '../store/actions'
 
-import CityCardBody from './CityCardBody'
+import CityInfo from './CityInfo'
 
 
 const styles = () => ({
@@ -51,7 +51,7 @@ class CityCard extends Component {
           {loading ? (
             <LinearProgress />
           ) : (
-            <CityCardBody weather={weather} error={error}></CityCardBody>
+            <CityInfo weather={weather} error={error}></CityInfo>
           )}
         </CardContent>
         <CardActions>

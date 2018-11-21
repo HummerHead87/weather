@@ -9,7 +9,7 @@ import { withStyles } from '@material-ui/core/styles'
 import currentLocation from '../decorators/currentLocation'
 import { loadWeatherCurrent } from '../store/actions'
 
-import CityCardBody from './CityCardBody'
+import CityInfo from './CityInfo'
 
 const styles = theme => ({
   root: {
@@ -45,7 +45,7 @@ class CurrentCity extends Component {
         </Typography>
         {!currentLocation && <Typography>Get your current location</Typography>}
         {loading && <LinearProgress />}
-        <CityCardBody weather={weather} error={error}></CityCardBody>
+        <CityInfo weather={weather} error={error}></CityInfo>
       </Paper>
     )
   }
