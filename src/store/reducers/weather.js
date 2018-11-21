@@ -1,7 +1,14 @@
 import keyBy from 'lodash/keyBy'
 import { Record, Map, List } from 'immutable'
 
-import { LOAD_WEATHER, START, SUCCESS, FAIL, LOAD_WEATHER_LIST } from '../constants'
+import {
+  LOAD_WEATHER,
+  LOAD_WEATHER_CURRENT,
+  LOAD_WEATHER_LIST,
+  START,
+  SUCCESS,
+  FAIL,
+} from '../constants'
 
 export const WeatherState = Record({
   loading: new List(),
@@ -16,23 +23,14 @@ export default (weatherState = defaultState, action) => {
 
   switch(type) {
   case LOAD_WEATHER + START:
-    const id = payload.current ? 'current' : payload.geonameId
     return weatherState
-      .set('loading', weatherState.loading.push(id))
+      .set('loading', weatherState.loading.push(payload.geonameId))
 
   case LOAD_WEATHER + SUCCESS:
     return weatherState
       .set('loading',
-        weatherState.loading.filterNot(id => {
-          if (id === 'current') {
-            return payload.current
-          }
-
-          return id === payload.geonameId
-        }))
-      .set('items', weatherState.items.set(
-        payload.data.id.toString(), { ...payload.data, current: payload.current })
-      )
+        weatherState.loading.filterNot(id => id === payload.geonameId))
+      .set('items', weatherState.items.set(payload.data.id.toString(), payload.data))
       .set('errors', weatherState.errors.delete(payload.geonameId))
 
   case LOAD_WEATHER + FAIL:
@@ -40,7 +38,21 @@ export default (weatherState = defaultState, action) => {
       .set('loading',
         weatherState.loading.filterNot(id => id === payload.geonameId))
       .set('errors', weatherState.errors.set(payload.geonameId.toString(), payload.data))
+  
+  case LOAD_WEATHER_CURRENT + START:
+    return weatherState.set('loading', weatherState.loading.push('current'))
+  
+  case LOAD_WEATHER_CURRENT + SUCCESS:
+    return weatherState
+      .set('loading', weatherState.loading.filterNot(id => id === 'current'))
+      .set('items', weatherState.items.set(payload.id.toString(), payload))
+      .set('errors', weatherState.errors.delete('current'))
 
+  case LOAD_WEATHER_CURRENT + FAIL:
+    return weatherState
+      .set('loading', weatherState.loading.filterNot(id => id === 'current'))
+      .set('errors', weatherState.errors.set('current', payload))
+    
   case LOAD_WEATHER_LIST + SUCCESS:
     return weatherState
       .set('loading',

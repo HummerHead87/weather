@@ -7,9 +7,9 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 
 import currentLocation from '../decorators/currentLocation'
-import { loadWeather } from '../store/actions'
+import { loadWeatherCurrent } from '../store/actions'
 
-import WeatherInfo from './WeatherInfo'
+import CityCardBody from './CityCardBody'
 
 const styles = theme => ({
   root: {
@@ -25,16 +25,15 @@ class CurrentCity extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { currentLocation, loadWeather } = this.props
+    const { currentLocation, loadWeatherCurrent } = this.props
 
     if (!prevProps.currentLocation && currentLocation) {
-      currentLocation.current = true
-      loadWeather(currentLocation)
+      loadWeatherCurrent(currentLocation)
     }
   }
 
   render() {
-    const { classes, detecting, currentLocation, weather, loading } = this.props
+    const { classes, detecting, currentLocation, weather, loading, error } = this.props
     
     return (
       <Paper className={classes.root} elevation={1}>
@@ -46,7 +45,7 @@ class CurrentCity extends Component {
         </Typography>
         {!currentLocation && <Typography>Get your current location</Typography>}
         {loading && <LinearProgress />}
-        {weather && <WeatherInfo weather={weather}></WeatherInfo>}
+        <CityCardBody weather={weather} error={error}></CityCardBody>
       </Paper>
     )
   }
@@ -60,10 +59,12 @@ CurrentCity.propTypes = {
   // from redux
   weather: PropTypes.object,
   loading: PropTypes.bool,
-  loadWeather: PropTypes.func.isRequired,
+  error: PropTypes.object,
+  loadWeatherCurrent: PropTypes.func.isRequired,
 }
 
 export default connect(state => ({
   weather: state.weather.items.find(({ current }) => current),
-  loading: state.weather.loading.includes('current')
-}), { loadWeather })(withStyles(styles)(currentLocation(CurrentCity)))
+  loading: state.weather.loading.includes('current'),
+  error: state.weather.errors.get('current')
+}), { loadWeatherCurrent })(withStyles(styles)(currentLocation(CurrentCity)))

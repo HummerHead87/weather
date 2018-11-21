@@ -2,8 +2,15 @@ import { Observable } from 'rxjs/Rx'
 import { combineEpics } from 'redux-observable'
 import partition from 'lodash/partition'
 
-import { loadWeatherSuccess, loadWeatherError, loadWeatherListSuccess, loadWeatherListError } from '../actions'
-import { LOAD_WEATHER, START } from '../constants'
+import {
+  loadWeatherSuccess,
+  loadWeatherError,
+  loadWeatherCurrentSuccess,
+  loadWeatherCurrentError,
+  loadWeatherListSuccess,
+  loadWeatherListError,
+} from '../actions'
+import { LOAD_WEATHER, LOAD_WEATHER_CURRENT, START } from '../constants'
 import loadWeather from '../../observables/loadWeather'
 
 const loadWeatherList = (dataArray) => {
@@ -25,21 +32,13 @@ const loadWeatherList = (dataArray) => {
     })
 }
 
-const loadWeatherItem = ({ payload: { geonameId, current = false, name, countryCode, lat, lon } }) => {
-  let queryParams
-
-  if (name) {
-    queryParams = { q: `${name},${countryCode}` }
-  } else {
-    queryParams = { lat, lon }
-  }
-
+const loadWeatherItem = ({ payload: { geonameId, name, countryCode } }) => {
   return Observable
     .zip(
-      Observable.of({ geonameId, current }),
-      loadWeather({ type: 'weather', data: queryParams })
+      Observable.of(geonameId),
+      loadWeather({ type: 'weather', data: { q: `${name},${countryCode}`} })
         .catch(err => Observable.of(err)),
-      ({ geonameId, current }, data) => ({ geonameId, current, data })
+      (geonameId, data) => ({ geonameId, data })
     )
     .map(payload => {
       if (payload.data instanceof Error) {
@@ -72,4 +71,28 @@ const loadWeatherEpic = (action$) => {
     .switchMap(obs => Observable.merge(...obs))
 }
 
-export const rootEpic = combineEpics(loadWeatherEpic)
+const loadWeatherCurrentEpic = (action$) => {
+  return action$.ofType(LOAD_WEATHER_CURRENT + START)
+    .switchMap(({ payload }) => {
+      const { name, countryCode, lat, lon } = payload
+      let queryParams
+
+      if (name) {
+        queryParams = { q: `${name},${countryCode}` }
+      } else {
+        queryParams = { lat, lon }
+      }
+      
+      return loadWeather({ type: 'weather', data: queryParams })
+        .catch(err => Observable.of(err))
+    })
+    .map(payload => {
+      if (payload instanceof Error) {
+        return loadWeatherCurrentError(payload)
+      } else {
+        return loadWeatherCurrentSuccess(payload)
+      }
+    })
+}
+
+export const rootEpic = combineEpics(loadWeatherEpic, loadWeatherCurrentEpic)
