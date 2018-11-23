@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Paper from '@material-ui/core/Paper'
+import Card from '@material-ui/core/Card'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import Button from '@material-ui/core/Button'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
@@ -12,11 +15,12 @@ import { loadWeatherCurrent } from '../store/actions'
 import CityInfo from './CityInfo'
 
 const styles = theme => ({
-  root: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+  label: {
+    marginBottom: theme.spacing.unit * 2
   },
+  rightButton: {
+    marginLeft: 'auto'
+  }
 })
 
 class CurrentCity extends Component {
@@ -33,20 +37,44 @@ class CurrentCity extends Component {
   }
 
   render() {
-    const { classes, detecting, currentLocation, weather, loading, error } = this.props
+    const {
+      classes,
+      detecting,
+      currentLocation,
+      weather,
+      loading,
+      error,
+      loadWeatherCurrent,
+    } = this.props
     
     return (
-      <Paper className={classes.root} elevation={1}>
-        <Typography variant="h5" component="h3">
-          This is a sheet of paper.
-        </Typography>
-        <Typography component="p">
-          Paper can be used to build surface or other elements for your application.
-        </Typography>
-        {!currentLocation && <Typography>Get your current location</Typography>}
-        {loading && <LinearProgress />}
-        <CityInfo weather={weather} error={error}></CityInfo>
-      </Paper>
+      <Card>
+        <CardContent>
+          {weather ? (
+            <Typography variant="h5" component="h3">
+              {weather.name}, {weather.sys.country}
+            </Typography>
+          ) : (
+            <LinearProgress />
+          )}
+          <Typography component="p" className={classes.label}>
+            Your current location
+          </Typography>
+          {detecting && <Typography>Get your current location</Typography>}
+          <CityInfo weather={weather} error={error}></CityInfo>
+        </CardContent>
+        <CardActions>
+          <Button
+            size="small"
+            color="primary"
+            className={classes.rightButton}
+            onClick={() => loadWeatherCurrent(currentLocation)}
+            disabled={loading || !currentLocation}
+          >
+            Reload
+          </Button>
+        </CardActions>
+      </Card>
     )
   }
 }

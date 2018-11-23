@@ -43,6 +43,8 @@ export default (weatherState = defaultState, action) => {
     return weatherState.set('loading', weatherState.loading.push('current'))
   
   case LOAD_WEATHER_CURRENT + SUCCESS:
+    payload.current = true
+
     return weatherState
       .set('loading', weatherState.loading.filterNot(id => id === 'current'))
       .set('items', weatherState.items.set(payload.id.toString(), payload))
