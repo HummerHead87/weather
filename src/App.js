@@ -4,12 +4,13 @@ import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import CloudIcon from '@material-ui/icons/Cloud'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Grid from '@material-ui/core/Grid'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { hot } from 'react-hot-loader'
 import AddIcon from '@material-ui/icons/Add'
+import Fab from '@material-ui/core/Fab'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import CityDialog from './components/CityDialog'
 import CityList from './components/CitiyList'
@@ -34,12 +35,6 @@ const styles = theme => ({
     margin: '0 auto',
     padding: `${theme.spacing.unit * 8}px ${theme.spacing.unit}px ${theme.spacing.unit * 6}px`,
   },
-  heroButtons: {
-    marginTop: theme.spacing.unit * 4,
-  },
-  buttonIcon: {
-    marginRight: theme.spacing.unit,
-  },
   layout: {
     width: 'auto',
     marginLeft: theme.spacing.unit * 3,
@@ -54,6 +49,11 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
   },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  }
 })
 
 class Album extends Component {
@@ -93,22 +93,28 @@ class Album extends Component {
                 World weather
               </Typography>
               <Typography variant="subtitle1" align="center" color="textSecondary" paragraph>
-                Watch weather in your current location and in any city in the world
+                Watch weather in your current location or in any other city in the world
               </Typography>
               <CurrentCity></CurrentCity>
-              <div className={classes.heroButtons}>
-                <Grid container justify="center">
-                  <Button variant="contained" color="primary" onClick={() => this.handleCityDialog(true)}>
-                    <AddIcon className={classes.buttonIcon} />
-                    Add city
-                  </Button>
-                </Grid>
-              </div>
             </div>
           </div>
           {/* End hero unit */}
 
           <CityList></CityList>
+
+          <Tooltip
+            title="Add city"
+            aria-label="Add city"
+            placement="left"
+          >
+            <Fab
+              className={classes.fab}
+              color="primary"
+              onClick={() => this.handleCityDialog(true)}
+            >
+              <AddIcon />
+            </Fab>
+          </Tooltip>
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
