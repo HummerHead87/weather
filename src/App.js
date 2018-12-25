@@ -14,6 +14,7 @@ import AddIcon from '@material-ui/icons/Add'
 import CityDialog from './components/CityDialog'
 import CityList from './components/CitiyList'
 import CurrentCity from './components/CurrentCity'
+import AboutDialog from './components/AboutDialog'
 
 const styles = theme => ({
   appBar: {
@@ -21,6 +22,9 @@ const styles = theme => ({
   },
   icon: {
     marginRight: theme.spacing.unit * 2,
+  },
+  grow: {
+    flexGrow: 1,
   },
   heroUnit: {
     backgroundColor: theme.palette.background.paper,
@@ -54,11 +58,16 @@ const styles = theme => ({
 
 class Album extends Component {
   state = {
-    cityDialog: false
+    cityDialog: false,
+    aboutDialog: false,
   }
 
   handleCityDialog = (value) => {
     this.setState({ cityDialog: value})
+  }
+
+  handleAboutDialog = (value) => {
+    this.setState({ aboutDialog: value})
   }
 
   render() {
@@ -70,9 +79,10 @@ class Album extends Component {
         <AppBar position="static" className={classes.appBar}>
           <Toolbar>
             <CloudIcon className={classes.icon} />
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography variant="h6" color="inherit" noWrap className={classes.grow}>
               World weather
             </Typography>
+            <Button color="inherit" onClick={() => this.handleAboutDialog(true)}>About</Button>
           </Toolbar>
         </AppBar>
         <main>
@@ -102,11 +112,8 @@ class Album extends Component {
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
-          <Typography variant="h6" align="center" gutterBottom>
-            Footer
-          </Typography>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-            Something here to give the footer a purpose!
+            Valeyev Rustam 2018
           </Typography>
         </footer>
         {/* End footer */}
@@ -115,6 +122,10 @@ class Album extends Component {
           key={this.state.cityDialog}
           onChangeOpen={this.handleCityDialog}
         ></CityDialog>
+        <AboutDialog
+          open={this.state.aboutDialog}
+          onChangeOpen={this.handleAboutDialog}
+        ></AboutDialog>
       </React.Fragment>
     )
   }

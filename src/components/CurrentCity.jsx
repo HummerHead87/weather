@@ -60,7 +60,7 @@ class CurrentCity extends Component {
           <Typography component="p" className={classes.label}>
             Your current location
           </Typography>
-          {detecting && <Typography>Get your current location</Typography>}
+          {detecting && <Typography>Detecting your current location</Typography>}
           <CityInfo weather={weather} error={error}></CityInfo>
         </CardContent>
         <CardActions>
