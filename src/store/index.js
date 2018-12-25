@@ -32,4 +32,3 @@ epicMiddleware.run(rootEpic)
 
 const persistor = persistStore(store)
 export { store, persistor }
-

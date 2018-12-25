@@ -10,8 +10,8 @@ export const CityRecord = Record({
   name: '',
   countryCode: '',
   countryName: '',
-  geonameId: '',
-  weatherId: '',
+  geonameId: '', // id города, по данным api.geonames.org
+  weatherId: '',  // id города, по данным api.openweathermap.org
 })
 
 const defaultState = CitiesState()
