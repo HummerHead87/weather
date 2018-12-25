@@ -12,6 +12,8 @@ import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab'
 import Tooltip from '@material-ui/core/Tooltip'
 
+import './App.less'
+
 import CityDialog from './components/CityDialog'
 import CityList from './components/CitiyList'
 import CurrentCity from './components/CurrentCity'
