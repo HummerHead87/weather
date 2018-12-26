@@ -92,7 +92,7 @@ CurrentCity.propTypes = {
 }
 
 export default connect(state => ({
-  weather: state.weather.items.find(({ current }) => current),
+  weather: state.weather.items.find(({ id }) => id === state.cities.currentCityId),
   loading: state.weather.loading.includes('current'),
   error: state.weather.errors.get('current')
 }), { loadWeatherCurrent })(withStyles(styles)(currentLocation(CurrentCity)))

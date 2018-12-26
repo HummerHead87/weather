@@ -79,13 +79,13 @@ const loadWeatherEpic = (action$) => {
 const loadWeatherCurrentEpic = (action$) => {
   return action$.ofType(LOAD_WEATHER_CURRENT + START)
     .switchMap(({ payload }) => {
-      const { name, countryCode, lat, lon } = payload
+      const { city, countryCode, lat, lon } = payload
       let queryParams
 
       // данные о локации могут прилететь в виде объекта с названием города (name)
       // или географические координаты (lat, lon)
-      if (name) {
-        queryParams = { q: `${name},${countryCode}` }
+      if (city) {
+        queryParams = { q: `${city},${countryCode}` }
       } else {
         queryParams = { lat, lon }
       }
