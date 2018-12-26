@@ -1,6 +1,8 @@
-import { Observable } from 'rxjs/Rx'
+import { from } from 'rxjs'
+import { pluck } from 'rxjs/operators'
 import Axios from  'axios-observable'
 
-export default Observable
-  .from(Axios.get('http://ipinfo.io/json'))
-  .pluck('data')
+const observable = from(Axios.get('http://ipinfo.io/json'))
+  .pipe(pluck('data'))
+  
+export default observable
