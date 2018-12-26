@@ -121,7 +121,7 @@ class Album extends Component {
         {/* Footer */}
         <footer className={classes.footer}>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-            Valeyev Rustam 2018
+            Valeyev Rustam, 2018
           </Typography>
         </footer>
         {/* End footer */}

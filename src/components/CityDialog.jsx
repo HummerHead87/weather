@@ -79,7 +79,7 @@ class CityDialog extends Component {
             Cancel
           </Button>
           <Button type="submit" onClick={handleSubmit} disabled={submitDisabled} color="primary">
-            Save
+            Add
           </Button>
         </DialogActions>
       </Dialog>

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
+import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -31,12 +32,21 @@ const styles = theme => ({
   cardContent: {
     flexGrow: 1,
   },
+  label: {
+    marginTop: theme.spacing.unit * 4,
+  }
 })
 
 const CityList = (props) => {
-  const {classes, cities} = props
+  const { classes, cities } = props
 
-  if (!cities) return null
+  if (!cities.size) return (
+    <Typography
+      className={classes.label}
+      align="center"
+      variant="h6"
+    >Click button in right bottom corner to add custom city</Typography>
+  )
   
   return (
     <div className={classNames(classes.layout, classes.cardGrid)}>
