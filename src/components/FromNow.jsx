@@ -1,22 +1,20 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Observable } from 'rxjs/Rx'
+import { interval } from 'rxjs'
+import { startWith, map } from 'rxjs/operators'
 
 export default class FromNow extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      fromNow: ''
-    }
+  state = {
+    fromNow: ''
   }
 
   componentDidMount() {
-    this.fromNow$ = Observable
-      .interval(1000 * 6)
-      .startWith(0)
-      .map(() => moment(this.props.date).fromNow())
+    this.fromNow$ = interval(1000 * 6)
+      .pipe(
+        startWith(0),
+        map(() => moment(this.props.date).fromNow())
+      )
       .subscribe(fromNow => this.setState({ fromNow }))
   }
 
