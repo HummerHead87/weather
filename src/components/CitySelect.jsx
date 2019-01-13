@@ -93,6 +93,10 @@ const styles = theme => ({
 
 let popperNode
 
+/** новая фича из ES7 для привязки контекста к методам
+ * @see https://medium.com/@fakiolinho/reactjs-and-es7-bbedb9862e61
+ * требуется поддержка декораторов в бабел
+ */
 @autobind
 class CitySelect extends Component {
   constructor(props) {

@@ -10,6 +10,7 @@ export default class FromNow extends Component {
   }
 
   componentDidMount() {
+    // каждую минуту обновляем кол-во времени, прошедшего с заданного момента
     this.fromNow$ = interval(1000 * 6)
       .pipe(
         startWith(0),
