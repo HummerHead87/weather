@@ -1,7 +1,14 @@
 import keyBy from 'lodash/keyBy'
 import { Record, Map, List } from 'immutable'
 
-import { LOAD_WEATHER, START, SUCCESS, FAIL, LOAD_WEATHER_LIST } from '../constants'
+import {
+  LOAD_WEATHER,
+  LOAD_WEATHER_CURRENT,
+  LOAD_WEATHER_LIST,
+  START,
+  SUCCESS,
+  FAIL,
+} from '../constants'
 
 export const WeatherState = Record({
   loading: new List(),
@@ -12,7 +19,7 @@ export const WeatherState = Record({
 const defaultState = new WeatherState()
 
 export default (weatherState = defaultState, action) => {
-  const {type, payload} = action
+  const { type, payload } = action
 
   switch(type) {
   case LOAD_WEATHER + START:
@@ -31,7 +38,21 @@ export default (weatherState = defaultState, action) => {
       .set('loading',
         weatherState.loading.filterNot(id => id === payload.geonameId))
       .set('errors', weatherState.errors.set(payload.geonameId.toString(), payload.data))
+  
+  case LOAD_WEATHER_CURRENT + START:
+    return weatherState.set('loading', weatherState.loading.push('current'))
+  
+  case LOAD_WEATHER_CURRENT + SUCCESS:
+    return weatherState
+      .set('loading', weatherState.loading.filterNot(id => id === 'current'))
+      .set('items', weatherState.items.set(payload.id.toString(), payload))
+      .set('errors', weatherState.errors.delete('current'))
 
+  case LOAD_WEATHER_CURRENT + FAIL:
+    return weatherState
+      .set('loading', weatherState.loading.filterNot(id => id === 'current'))
+      .set('errors', weatherState.errors.set('current', payload))
+    
   case LOAD_WEATHER_LIST + SUCCESS:
     return weatherState
       .set('loading',

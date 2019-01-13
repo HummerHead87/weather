@@ -2,16 +2,22 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
-import CameraIcon from '@material-ui/icons/PhotoCamera'
+import CloudIcon from '@material-ui/icons/Cloud'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Grid from '@material-ui/core/Grid'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import { hot } from 'react-hot-loader'
+import AddIcon from '@material-ui/icons/Add'
+import Fab from '@material-ui/core/Fab'
+import Tooltip from '@material-ui/core/Tooltip'
+
+import './App.less'
 
 import CityDialog from './components/CityDialog'
 import CityList from './components/CitiyList'
+import CurrentCity from './components/CurrentCity'
+import AboutDialog from './components/AboutDialog'
 
 const styles = theme => ({
   appBar: {
@@ -20,16 +26,16 @@ const styles = theme => ({
   icon: {
     marginRight: theme.spacing.unit * 2,
   },
+  grow: {
+    flexGrow: 1,
+  },
   heroUnit: {
     backgroundColor: theme.palette.background.paper,
   },
   heroContent: {
     maxWidth: 600,
     margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`,
-  },
-  heroButtons: {
-    marginTop: theme.spacing.unit * 4,
+    padding: `${theme.spacing.unit * 8}px ${theme.spacing.unit}px ${theme.spacing.unit * 6}px`,
   },
   layout: {
     width: 'auto',
@@ -41,35 +47,29 @@ const styles = theme => ({
       marginRight: 'auto',
     },
   },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  cardMedia: {
-    paddingTop: '56.25%', // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing.unit * 6,
   },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  }
 })
-
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 class Album extends Component {
   state = {
-    cityDialog: false
+    cityDialog: false,
+    aboutDialog: false,
   }
 
   handleCityDialog = (value) => {
     this.setState({ cityDialog: value})
+  }
+
+  handleAboutDialog = (value) => {
+    this.setState({ aboutDialog: value})
   }
 
   render() {
@@ -80,10 +80,11 @@ class Album extends Component {
         <CssBaseline />
         <AppBar position="static" className={classes.appBar}>
           <Toolbar>
-            <CameraIcon className={classes.icon} />
-            <Typography variant="h6" color="inherit" noWrap>
-              Album layout
+            <CloudIcon className={classes.icon} />
+            <Typography variant="h6" color="inherit" noWrap className={classes.grow}>
+              World weather
             </Typography>
+            <Button color="inherit" onClick={() => this.handleAboutDialog(true)}>About</Button>
           </Toolbar>
         </AppBar>
         <main>
@@ -91,40 +92,36 @@ class Album extends Component {
           <div className={classes.heroUnit}>
             <div className={classes.heroContent}>
               <Typography variant="h2" align="center" color="textPrimary" gutterBottom>
-                Album layout
+                World weather
               </Typography>
-              <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                Something short and leading about the collection below—its contents, the creator, etc.
-                Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-                entirely.
+              <Typography variant="subtitle1" align="center" color="textSecondary" paragraph>
+                Watch weather in your current location or in any other city in the world
               </Typography>
-              <div className={classes.heroButtons}>
-                <Grid container spacing={16} justify="center">
-                  <Grid item>
-                    <Button variant="contained" color="primary" onClick={() => this.handleCityDialog(true)}>
-                      Add city
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button variant="outlined" color="primary">
-                      Secondary action
-                    </Button>
-                  </Grid>
-                </Grid>
-              </div>
+              <CurrentCity></CurrentCity>
             </div>
           </div>
           {/* End hero unit */}
 
           <CityList></CityList>
+
+          <Tooltip
+            title="Add city"
+            aria-label="Add city"
+            placement="left"
+          >
+            <Fab
+              className={classes.fab}
+              color="primary"
+              onClick={() => this.handleCityDialog(true)}
+            >
+              <AddIcon />
+            </Fab>
+          </Tooltip>
         </main>
         {/* Footer */}
         <footer className={classes.footer}>
-          <Typography variant="h6" align="center" gutterBottom>
-            Footer
-          </Typography>
           <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-            Something here to give the footer a purpose!
+            Valeyev Rustam, 2018
           </Typography>
         </footer>
         {/* End footer */}
@@ -133,6 +130,10 @@ class Album extends Component {
           key={this.state.cityDialog}
           onChangeOpen={this.handleCityDialog}
         ></CityDialog>
+        <AboutDialog
+          open={this.state.aboutDialog}
+          onChangeOpen={this.handleAboutDialog}
+        ></AboutDialog>
       </React.Fragment>
     )
   }
