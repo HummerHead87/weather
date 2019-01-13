@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -39,51 +39,47 @@ const libs = [
   }
 ]
 
-class AboutDialog extends Component {
-  render() {
-    const { open, onChangeOpen } = this.props
+const AboutDialog = ({ open, onChangeOpen }) => {
+  return (
+    <Dialog
+      open={open}
+      onClose={() => onChangeOpen(false)}
+      fullWidth
+      aria-labelledby="about-dialog-title"
+    >
+      <DialogTitle id="about-dialog-title">About</DialogTitle>
+      <DialogContent>
+        <Typography variant="subtitle1">Stack & libs:</Typography>
+        <List dense>
+          {libs.map(item => {
+            if (typeof item === 'string') {
+              return (
+                <ListItem key={item}>
+                  <ListItemText>{item}</ListItemText>
+                </ListItem>
+              )
+            } else {
+              const { label, href, annotation = null } = item
 
-    return (
-      <Dialog
-        open={open}
-        onClose={() => onChangeOpen(false)}
-        fullWidth
-        aria-labelledby="about-dialog-title"
-      >
-        <DialogTitle id="about-dialog-title">About</DialogTitle>
-        <DialogContent>
-          <Typography variant="subtitle1">Stack & libs:</Typography>
-          <List dense>
-            {libs.map(item => {
-              if (typeof item === 'string') {
-                return (
-                  <ListItem key={item}>
-                    <ListItemText>{item}</ListItemText>
-                  </ListItem>
-                )
-              } else {
-                const { label, href, annotation = null } = item
-
-                return (
-                  <ListItem key={label}>
-                    <ListItemText>
-                      <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>{annotation && ` - ${annotation}`}
-                    </ListItemText>
-                  </ListItem>
-                )
-              }
-            })}
-          </List>
-          <Typography align="right" gutterBottom>World weather by Valeyev Rustam. 2018</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => onChangeOpen(false)} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
-    )
-  }
+              return (
+                <ListItem key={label}>
+                  <ListItemText>
+                    <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>{annotation && ` - ${annotation}`}
+                  </ListItemText>
+                </ListItem>
+              )
+            }
+          })}
+        </List>
+        <Typography align="right" gutterBottom>World weather by Valeyev Rustam. 2018</Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => onChangeOpen(false)} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
 }
 
 AboutDialog.propTypes = {
