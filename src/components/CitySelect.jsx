@@ -8,6 +8,7 @@ import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import pick from 'lodash/pick'
+import { autobind } from 'core-decorators'
 
 import { Subject} from 'rxjs'
 import {
@@ -92,6 +93,7 @@ const styles = theme => ({
 
 let popperNode
 
+@autobind
 class CitySelect extends Component {
   constructor(props) {
     super(props)
@@ -114,28 +116,28 @@ class CitySelect extends Component {
       })
   }
 
-  handleChange = ({ target: { value }}) => {
+  handleChange({ target: { value }}) {
     this.props.onChange('city', value)
     this.loadCities$.next(value)
   }
 
-  handleBlur = () => {
+  handleBlur() {
     this.props.onBlur('city', true)
   }
 
-  handleKeyPress = (e) => {
+  handleKeyPress(e) {
     if(e.keyCode == 13){
       this.props.onSubmit()
     }
   }
 
-  citySelect = (city) => {
+  citySelect(city) {
     this.props.onChange('city',
       pick(city, ['name', 'countryCode', 'countryName', 'geonameId'])
     )
   }
 
-  generateLabel = (city) => {
+  generateLabel(city) {
     if (typeof city === 'string') {
       return city
     } else {
