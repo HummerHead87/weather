@@ -12,7 +12,7 @@ const loadWeather = ({ type, data }) => {
   const params = {
     units: 'metric',
     lang: 'en',
-    // APPID: process.env.OPENWEATHERMAP_APPID,
+    APPID: process.env.OPENWEATHERMAP_APPID,
     ...data
   }
 

@@ -50,13 +50,12 @@ class CurrentCity extends Component {
     return (
       <Card>
         <CardContent>
-          {weather ? (
+          {weather && (
             <Typography variant="h5" component="h3">
               {weather.name}, {weather.sys.country}
             </Typography>
-          ) : (
-            <LinearProgress />
           )}
+          {loading && <LinearProgress />}
           <Typography component="p" className={classes.label}>
             Your current location
           </Typography>
