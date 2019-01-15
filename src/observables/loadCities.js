@@ -1,5 +1,5 @@
 import deburr from 'lodash/deburr'
-import { from, of, merge } from 'rxjs'
+import { defer, of, merge } from 'rxjs'
 import { pluck, map, switchMap, catchError } from 'rxjs/operators'
 import Axios from  'axios-observable'
 
@@ -15,7 +15,8 @@ const loadGeoData = name_startsWith => {
     username: process.env.GEONAMES_LOGIN
   }
 
-  return from(Axios.get(url, { params }))
+  return defer(() => Axios.get(url, { params }))
+    .retry(2)
     .pipe(
       pluck('data', 'geonames'),
       map(result => ({ result }))

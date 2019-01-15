@@ -2,6 +2,9 @@
 import { throwError, timer } from 'rxjs'
 import { mergeMap, finalize } from 'rxjs/operators'
 
+/** пример из учебника по rxjs. Повторяет неудачный ajax запрос
+ * @see https://www.learnrxjs.io/operators/error_handling/retrywhen.html Example 2
+ */
 export default ({
   maxRetryAttempts = 3,
   scalingDuration = 1000,
