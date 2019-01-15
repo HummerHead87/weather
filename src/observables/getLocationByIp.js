@@ -1,8 +1,14 @@
-import { from } from 'rxjs'
-import { pluck } from 'rxjs/operators'
+import { defer } from 'rxjs'
+import { pluck, retryWhen } from 'rxjs/operators'
+
 import Axios from  'axios-observable'
 
-const observable = from(Axios.get('http://ipinfo.io/json'))
-  .pipe(pluck('data'))
-  
+import genericRetryStrategy from './genericRetryStrategy'
+
+const observable = defer(() => Axios.get('http://ipinfo.io/json'))
+  .pipe(
+    retryWhen(genericRetryStrategy()),
+    pluck('data')
+  )
+
 export default observable

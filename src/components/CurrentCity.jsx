@@ -31,7 +31,8 @@ class CurrentCity extends Component {
   componentDidUpdate(prevProps) {
     const { currentLocation, loadWeatherCurrent } = this.props
 
-    if (!prevProps.currentLocation && currentLocation) {
+    if (!prevProps.currentLocation && currentLocation
+        && !(currentLocation instanceof Error)) {
       loadWeatherCurrent(currentLocation)
     }
   }
@@ -46,6 +47,8 @@ class CurrentCity extends Component {
       error,
       loadWeatherCurrent,
     } = this.props
+
+    const detectingError = currentLocation instanceof Error
     
     return (
       <Card>
@@ -55,10 +58,15 @@ class CurrentCity extends Component {
               {weather.name}, {weather.sys.country}
             </Typography>
           )}
-          {loading && <LinearProgress />}
+          {(loading || detecting) && <LinearProgress />}
           <Typography component="p" className={classes.label}>
-            Your current location
+            Your current location:
           </Typography>
+          {detectingError && (
+            <Typography color='error'>
+              Your location could not be determined
+            </Typography>
+          )}
           {detecting && <Typography>Detecting your current location</Typography>}
           <CityInfo weather={weather} error={error}></CityInfo>
         </CardContent>

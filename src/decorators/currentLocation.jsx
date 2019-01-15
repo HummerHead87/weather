@@ -29,7 +29,11 @@ export default (OriginalComponent) => class CurrentLocation extends Component {
     }
 
     if (!currentLocation) {
-      currentLocation = await this.getCityByIP()
+      try {
+        currentLocation = await this.getCityByIP()
+      } catch (err) {
+        currentLocation = err
+      }
     }
 
     this.setState({ detecting: false, currentLocation })
@@ -40,11 +44,12 @@ export default (OriginalComponent) => class CurrentLocation extends Component {
   }
 
   getCityByIP = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       getLocationByIP.subscribe(
         ({ city, country: countryCode }) => {
           resolve({ city, countryCode })
-        }
+        },
+        (err) => reject(err)
       )
     })
   }
