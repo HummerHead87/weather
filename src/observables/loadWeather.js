@@ -1,5 +1,5 @@
 import { defer } from 'rxjs'
-import { pluck } from 'rxjs/operators'
+import { pluck, retryWhen } from 'rxjs/operators'
 
 import Axios from  'axios-observable'
 
@@ -17,8 +17,10 @@ const loadWeather = ({ type, data }) => {
   }
 
   return defer(() => Axios.get(getUrl(type), { params }))
-    .retryWhen(genericRetryStrategy())
-    .pipe(pluck('data'))
+    .pipe(
+      retryWhen(genericRetryStrategy()),
+      pluck('data')
+    )
 }
 
 export default loadWeather
