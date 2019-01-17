@@ -13,8 +13,9 @@ export default ({
   return attempts.pipe(
     mergeMap((error, i) => {
       const retryAttempt = i + 1
-      // if maximum number of retries have been met
-      // or response is a status code we don't wish to retry, throw error
+      // если превышено максимальное число повторов
+      // или статус ответа при котором мы не хотим повторять запрос
+      // выбрасываем ошибку
       if (
         retryAttempt > maxRetryAttempts ||
         excludedStatusCodes.find(e => e === error.status)
@@ -25,7 +26,7 @@ export default ({
         `Attempt ${retryAttempt}: retrying in ${Math.pow(retryAttempt, 2)
           * scalingDuration}ms`
       )
-      // retry after 1s, 4s, etc...
+      // повтор после 1с, 4с, и тд.
       return timer(Math.pow(retryAttempt, 2) * scalingDuration)
     }),
     finalize(() => console.log('We are done!'))
